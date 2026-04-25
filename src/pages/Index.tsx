@@ -1,9 +1,12 @@
 import { useState } from "react";
 import Icon from "@/components/ui/icon";
 
-const HERO_IMG = "https://cdn.poehali.dev/projects/a8250dc6-3643-4a52-8f7c-e2cafb69c475/files/cb183e85-8199-4001-b1dd-5551885ac41a.jpg";
-const INTERIOR_IMG = "https://cdn.poehali.dev/projects/a8250dc6-3643-4a52-8f7c-e2cafb69c475/files/302c0164-e923-4c7a-b86f-bcf64640e387.jpg";
-const AERIAL_IMG = "https://cdn.poehali.dev/projects/a8250dc6-3643-4a52-8f7c-e2cafb69c475/files/6af57f48-ce86-4ab8-9020-08d9cd08667e.jpg";
+const HERO_IMG = "https://cdn.poehali.dev/projects/a8250dc6-3643-4a52-8f7c-e2cafb69c475/bucket/1ffb6513-906b-46da-825f-20fffd66d1d7.png";
+const SHELL_IMG = "https://cdn.poehali.dev/projects/a8250dc6-3643-4a52-8f7c-e2cafb69c475/bucket/eb10cde4-2cdc-4226-b614-c9aec9cccef1.png";
+const SIDE_IMG = "https://cdn.poehali.dev/projects/a8250dc6-3643-4a52-8f7c-e2cafb69c475/bucket/cca1c5c1-c483-49a1-aff8-ff939a14a6e7.png";
+const DOME_IMG = "https://cdn.poehali.dev/projects/a8250dc6-3643-4a52-8f7c-e2cafb69c475/bucket/5c5923ea-90cb-4794-b409-0a0c9202fe7e.png";
+const INTERIOR_IMG = "https://cdn.poehali.dev/projects/a8250dc6-3643-4a52-8f7c-e2cafb69c475/bucket/fdbe94ef-cb89-445d-8232-5b3b62809183.png";
+const AERIAL_IMG = HERO_IMG;
 
 const models = [
   {
@@ -244,14 +247,18 @@ export default function Index() {
 
       {/* GALLERY */}
       <section className="py-4 px-6 md:px-16 max-w-6xl mx-auto">
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-4 h-64 md:h-80">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 h-64 md:h-80">
           <div
-            className="col-span-2 rounded-2xl bg-cover bg-center"
-            style={{ backgroundImage: `url(${AERIAL_IMG})` }}
+            className="col-span-2 row-span-1 rounded-2xl bg-cover bg-center"
+            style={{ backgroundImage: `url(${SHELL_IMG})` }}
           />
           <div
             className="rounded-2xl bg-cover bg-center"
-            style={{ backgroundImage: `url(${INTERIOR_IMG})` }}
+            style={{ backgroundImage: `url(${SIDE_IMG})` }}
+          />
+          <div
+            className="rounded-2xl bg-cover bg-center"
+            style={{ backgroundImage: `url(${DOME_IMG})` }}
           />
         </div>
       </section>
