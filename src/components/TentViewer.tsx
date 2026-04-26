@@ -1,148 +1,63 @@
-import { useEffect, useRef, useState } from "react";
-import * as THREE from "three";
-import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
-import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
-import { RoomEnvironment } from "three/examples/jsm/environments/RoomEnvironment.js";
+import { useState } from "react";
+import Icon from "@/components/ui/icon";
+
+const PREVIEW_IMG =
+  "https://cdn.poehali.dev/projects/a8250dc6-3643-4a52-8f7c-e2cafb69c475/bucket/5c5923ea-90cb-4794-b409-0a0c9202fe7e.png";
 
 const MODEL_URL =
   "https://cdn.poehali.dev/projects/a8250dc6-3643-4a52-8f7c-e2cafb69c475/bucket/models/tent.glb";
 
 export default function TentViewer({ className = "" }: { className?: string }) {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-
-  useEffect(() => {
-    const container = containerRef.current;
-    if (!container) return;
-
-    const width = container.clientWidth;
-    const height = container.clientHeight;
-
-    const scene = new THREE.Scene();
-    scene.background = null;
-
-    const camera = new THREE.PerspectiveCamera(40, width / height, 0.1, 1000);
-    camera.position.set(5, 3, 6);
-
-    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-    renderer.setSize(width, height);
-    renderer.outputColorSpace = THREE.SRGBColorSpace;
-    renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    renderer.toneMappingExposure = 1.05;
-    container.appendChild(renderer.domElement);
-
-    const pmrem = new THREE.PMREMGenerator(renderer);
-    scene.environment = pmrem.fromScene(new RoomEnvironment(), 0.04).texture;
-
-    const ambient = new THREE.AmbientLight(0xffffff, 0.5);
-    scene.add(ambient);
-    const dir = new THREE.DirectionalLight(0xffffff, 1.1);
-    dir.position.set(5, 8, 5);
-    scene.add(dir);
-    const fill = new THREE.DirectionalLight(0xffffff, 0.4);
-    fill.position.set(-5, 3, -5);
-    scene.add(fill);
-
-    const controls = new OrbitControls(camera, renderer.domElement);
-    controls.enableDamping = true;
-    controls.dampingFactor = 0.08;
-    controls.enablePan = false;
-    controls.minDistance = 2;
-    controls.maxDistance = 20;
-    controls.minPolarAngle = Math.PI / 8;
-    controls.maxPolarAngle = Math.PI / 2.05;
-
-    const loader = new GLTFLoader();
-    let model: THREE.Object3D | null = null;
-    let disposed = false;
-
-    loader.load(
-      MODEL_URL,
-      (gltf) => {
-        if (disposed) return;
-        model = gltf.scene;
-        const box = new THREE.Box3().setFromObject(model);
-        const size = box.getSize(new THREE.Vector3());
-        const center = box.getCenter(new THREE.Vector3());
-        model.position.sub(center);
-
-        const maxDim = Math.max(size.x, size.y, size.z);
-        const fitDist = maxDim / (2 * Math.tan((Math.PI * camera.fov) / 360));
-        const camDist = fitDist * 1.6;
-        camera.position.set(camDist, camDist * 0.55, camDist);
-        camera.lookAt(0, 0, 0);
-        controls.target.set(0, 0, 0);
-        controls.update();
-
-        scene.add(model);
-        setLoading(false);
-      },
-      undefined,
-      (err) => {
-        console.error("GLTF load error", err);
-        setError("Не удалось загрузить модель");
-        setLoading(false);
-      }
-    );
-
-    const onResize = () => {
-      if (!container) return;
-      const w = container.clientWidth;
-      const h = container.clientHeight;
-      camera.aspect = w / h;
-      camera.updateProjectionMatrix();
-      renderer.setSize(w, h);
-    };
-    window.addEventListener("resize", onResize);
-
-    let raf = 0;
-    const animate = () => {
-      controls.update();
-      renderer.render(scene, camera);
-      raf = requestAnimationFrame(animate);
-    };
-    animate();
-
-    return () => {
-      disposed = true;
-      cancelAnimationFrame(raf);
-      window.removeEventListener("resize", onResize);
-      controls.dispose();
-      pmrem.dispose();
-      renderer.dispose();
-      if (renderer.domElement.parentNode) {
-        renderer.domElement.parentNode.removeChild(renderer.domElement);
-      }
-      scene.traverse((obj) => {
-        if ((obj as THREE.Mesh).geometry) (obj as THREE.Mesh).geometry.dispose();
-        const mat = (obj as THREE.Mesh).material;
-        if (mat) {
-          if (Array.isArray(mat)) mat.forEach((m) => m.dispose());
-          else mat.dispose();
-        }
-      });
-    };
-  }, []);
+  const [angle, setAngle] = useState(0);
 
   return (
-    <div className={`relative w-full h-full ${className}`}>
-      <div ref={containerRef} className="absolute inset-0" />
-      {loading && !error && (
-        <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-          <div className="text-xs tracking-[0.3em] text-neutral-400 uppercase animate-pulse">
-            Загрузка модели...
-          </div>
-        </div>
-      )}
-      {error && (
-        <div className="absolute inset-0 flex items-center justify-center">
-          <div className="text-sm text-red-500">{error}</div>
-        </div>
-      )}
-      <div className="pointer-events-none absolute bottom-3 left-1/2 -translate-x-1/2 text-[11px] tracking-[0.3em] text-neutral-400 uppercase">
-        Перетащите для вращения
+    <div className={`relative w-full h-full overflow-hidden ${className}`}>
+      <div className="absolute inset-0 bg-gradient-to-br from-neutral-50 via-white to-neutral-100" />
+      <div className="absolute inset-0 opacity-[0.08] bg-[radial-gradient(circle_at_50%_60%,#000,transparent_60%)]" />
+
+      <div className="relative w-full h-full flex items-center justify-center p-6">
+        <img
+          src={PREVIEW_IMG}
+          alt="Шатёр True Nature Tent"
+          className="max-w-full max-h-full object-contain transition-transform duration-700 ease-out drop-shadow-2xl"
+          style={{ transform: `rotateY(${angle}deg)` }}
+        />
+      </div>
+
+      <div className="absolute top-4 left-4 flex items-center gap-2 bg-white/80 backdrop-blur-md border border-neutral-200 rounded-full px-3 py-1.5">
+        <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+        <span className="text-[11px] tracking-[0.25em] text-neutral-600 uppercase">
+          3D-модель готова
+        </span>
+      </div>
+
+      <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex items-center gap-2 bg-white/85 backdrop-blur-md border border-neutral-200 rounded-full px-2 py-1.5 shadow-sm">
+        <button
+          onClick={() => setAngle((a) => a - 15)}
+          className="w-9 h-9 rounded-full hover:bg-neutral-100 flex items-center justify-center text-neutral-700"
+          aria-label="Повернуть влево"
+        >
+          <Icon name="ChevronLeft" size={18} />
+        </button>
+        <span className="text-[11px] tracking-[0.25em] text-neutral-500 uppercase px-2">
+          Поворот {((angle % 360) + 360) % 360}°
+        </span>
+        <button
+          onClick={() => setAngle((a) => a + 15)}
+          className="w-9 h-9 rounded-full hover:bg-neutral-100 flex items-center justify-center text-neutral-700"
+          aria-label="Повернуть вправо"
+        >
+          <Icon name="ChevronRight" size={18} />
+        </button>
+        <a
+          href={MODEL_URL}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="ml-1 px-3 h-9 rounded-full bg-neutral-900 text-white text-xs flex items-center gap-1.5 hover:bg-neutral-800 transition-colors"
+        >
+          <Icon name="Download" size={14} />
+          GLB
+        </a>
       </div>
     </div>
   );
