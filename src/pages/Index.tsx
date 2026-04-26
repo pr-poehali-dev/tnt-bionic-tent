@@ -18,12 +18,7 @@ export default function Index() {
         <p className="text-xs tracking-[0.4em] text-neutral-500 uppercase mb-3">
           True Nature Tent
         </p>
-        <h1 className="font-cormorant text-4xl md:text-6xl font-light text-neutral-800 leading-tight">
-          Шатры, в которых
-          <em className="block not-italic font-normal text-neutral-900">
-            хочется остаться
-          </em>
-        </h1>
+        <h1 className="font-cormorant text-4xl md:text-6xl font-light text-neutral-800 leading-tight">Welcome back home.</h1>
       </section>
 
       {/* 3D + видео */}

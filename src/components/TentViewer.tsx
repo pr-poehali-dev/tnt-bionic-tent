@@ -15,7 +15,7 @@ export default function TentViewer({ className = "" }: { className?: string }) {
       <div className="absolute inset-0 bg-gradient-to-br from-neutral-50 via-white to-neutral-100" />
       <div className="absolute inset-0 opacity-[0.08] bg-[radial-gradient(circle_at_50%_60%,#000,transparent_60%)]" />
 
-      <div className="relative w-full h-full flex items-center justify-center p-6">
+      <div className="relative w-full h-full flex items-center justify-center p-6 rounded-sm">
         <img
           src={PREVIEW_IMG}
           alt="Шатёр True Nature Tent"
