@@ -1,4 +1,4 @@
-import { Canvas, useFrame } from "@react-three/fiber";
+import { Canvas } from "@react-three/fiber";
 import {
   OrbitControls,
   Environment,
@@ -7,8 +7,7 @@ import {
   Center,
   Bounds,
 } from "@react-three/drei";
-import { Suspense, useRef } from "react";
-import * as THREE from "three";
+import { Suspense } from "react";
 
 const MODEL_URL =
   "https://cdn.poehali.dev/projects/a8250dc6-3643-4a52-8f7c-e2cafb69c475/bucket/models/tent.glb";
@@ -16,19 +15,12 @@ const MODEL_URL =
 useGLTF.preload(MODEL_URL);
 
 function TentModel() {
-  const group = useRef<THREE.Group>(null);
   const { scene } = useGLTF(MODEL_URL);
 
-  useFrame((_, delta) => {
-    if (group.current) group.current.rotation.y += delta * 0.12;
-  });
-
   return (
-    <group ref={group}>
-      <Center>
-        <primitive object={scene} />
-      </Center>
-    </group>
+    <Center>
+      <primitive object={scene} />
+    </Center>
   );
 }
 
