@@ -1,45 +1,31 @@
+@import url("https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600&family=Inter:wght@300;400;500;600&display=swap");
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer base {
   :root {
-    --bg: #0f0d0a;
-    --fg: #f0ece4;
-    --surface: #181510;
-    --border: rgba(240, 236, 228, 0.1);
-    --muted: #8a8070;
-    --accent: #c9a96e;
-    --accent-fg: #0f0d0a;
-
-    --background: 30 15% 6%;
-    --foreground: 40 30% 92%;
-    --card: 30 15% 8%;
-    --card-foreground: 40 30% 92%;
-    --popover: 30 15% 8%;
-    --popover-foreground: 40 30% 92%;
-    --primary: 38 52% 60%;
-    --primary-foreground: 30 15% 6%;
-    --secondary: 30 10% 15%;
-    --secondary-foreground: 40 30% 92%;
-    --muted: 30 10% 15%;
-    --muted-foreground: 35 15% 50%;
-    --accent: 38 52% 60%;
-    --accent-foreground: 30 15% 6%;
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
-    --border: 35 15% 15%;
-    --input: 35 15% 15%;
-    --ring: 38 52% 60%;
-    --radius: 0.5rem;
-    --sidebar-background: 30 15% 8%;
-    --sidebar-foreground: 40 30% 92%;
-    --sidebar-primary: 38 52% 60%;
-    --sidebar-primary-foreground: 30 15% 6%;
-    --sidebar-accent: 30 10% 15%;
-    --sidebar-accent-foreground: 40 30% 92%;
-    --sidebar-border: 35 15% 15%;
-    --sidebar-ring: 38 52% 60%;
+    --background: 0 0% 100%;
+    --foreground: 0 0% 12%;
+    --card: 0 0% 100%;
+    --card-foreground: 0 0% 12%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 0 0% 12%;
+    --primary: 0 0% 12%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 0 0% 96%;
+    --secondary-foreground: 0 0% 12%;
+    --muted: 0 0% 96%;
+    --muted-foreground: 0 0% 45%;
+    --accent: 0 0% 96%;
+    --accent-foreground: 0 0% 12%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 0 0% 90%;
+    --input: 0 0% 90%;
+    --ring: 0 0% 12%;
+    --radius: 0.75rem;
   }
 
   html {
@@ -47,8 +33,13 @@
   }
 
   body {
-    background-color: var(--bg);
-    color: var(--fg);
+    background-color: #ffffff;
+    color: #1a1a1a;
+    font-family: "Inter", system-ui, sans-serif;
+  }
+
+  .font-cormorant {
+    font-family: "Cormorant Garamond", serif;
   }
 }
 
